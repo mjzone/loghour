@@ -36,7 +36,7 @@ gulp.task('open-website', function(done) {
 
 /* Deploy Lambdas and API Gateway to AWS */
 gulp.task('deploy-api', function(cb) {
-    runCommand('cd serverless' + commandSeparator + ' sls deploy --stage ' + (util.env.stage || 'dev') + ' -v');
+    runCommand('cd serverless' + commandSeparator + ' sls deploy --stage ' + util.env.stage + ' --client_id ' + util.env.client_id + ' --client_secret ' + util.env.client_secret + ' -v');
 });
 
 /* Deploy service in AWS */

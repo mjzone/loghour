@@ -29,12 +29,10 @@ plugins:
 
 custom:
   stage: ${opt:stage, self:provider.stage}
-  client_secret: ${opt:client_secret, self:provider.client_secret}
-  client_id: ${opt:client_id, self:provider.client_id}
   writeEnvVars:
     REMOTE_STAGE: ${self:custom.stage}
-    GITHUB_CLIENT_SECRET: ${self:custom.client_secret}
-    GITHUB_CLIENT_ID: ${self:custom.client_id}
+    GITHUB_CLIENT_SECRET: ${opt:client_id}
+    GITHUB_CLIENT_ID: ${opt:client_secret}
 
 functions:
   authorize:
