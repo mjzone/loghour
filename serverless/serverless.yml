@@ -36,11 +36,20 @@ custom:
 
 functions:
   authorize:
-    handler: handlers/authorize/index.handler
+    handler: authorize/index.handler
     events:
       - http:
           method: GET
           path: authorize/{code}
+          integration: lambda
+          cors: true
+          request: ${file(./templates.yml):request}
+  current:
+    handler: current/index.handler
+    events:
+      - http:
+          method: GET
+          path: current
           integration: lambda
           cors: true
           request: ${file(./templates.yml):request}
