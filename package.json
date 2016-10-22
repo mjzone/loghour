@@ -10,8 +10,7 @@
     "gulp-sequence": "0.4.6",
     "gulp-util": "3.0.7",
     "i": "0.3.5",
-    "webpack": "1.13.2",
-    "yargs": "^6.3.0"
+    "webpack": "1.13.2"
   },
   "scripts": {
     "preinstall": "cd web && npm install",
