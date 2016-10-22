@@ -27,6 +27,6 @@ http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html
 
 3) Go to the project root folder and execute the following command
 ```
-gulp deploy-api --stage dev --client_id <github-client-id> --client_secret <github-client-secret>
+gulp deploy-api --stage dev --github_id <github-client-id> --github_secret <github-client-secret>
 ```
 Note:- Here 'dev' is the Stage and You can use a different Stage also. To find github app information go to https://github.com/settings/applications/new
