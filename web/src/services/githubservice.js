@@ -1,5 +1,5 @@
 import axios from 'axios';
-var USER_TOKEN = 'YOUR TOKEN HERE';
+var USER_TOKEN = "31d3f035f8d56cc2f958ba10ee849b987d829187"; //localStorage.getItem('token');
 var instance = axios.create({
     baseURL: 'https://api.github.com/',
     headers: {

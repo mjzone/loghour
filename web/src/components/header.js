@@ -8,8 +8,6 @@ export default class Header extends React.Component {
             <div>
                 <div className="row large-6 large-offset-5 medium-6 medium-offset-5 small-6 small-offset-5 columns">
                     <h3>User Profile</h3>
-                    <Link to="/organization"> Organizations </Link>
-                    <Link to="/organization/100/projects"> Projects </Link>
                 </div>              
             </div>            
         );
