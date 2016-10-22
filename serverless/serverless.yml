@@ -53,3 +53,12 @@ functions:
           integration: lambda
           cors: true
           request: ${file(./templates.yml):request}
+  repos:
+    handler: repos/index.handler
+    events:
+      - http:
+          method: GET
+          path: repos/{org}
+          integration: lambda
+          cors: true
+          request: ${file(./templates.yml):request}

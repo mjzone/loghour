@@ -8,15 +8,10 @@ module.exports.handler = (event, context, cb) => {
     event.headers = JSON.parse(event.headers || "{}");
 
     var client = github.client(event.headers.Authorization);
-    var ghme = client.me();
-
-    ghme.info(function(err, user, headers) {
-        var ghuser = client.user(user.login);
-        ghuser.orgs(function(err, orgs) {
-            context.succeed({
-                orgs: orgs,
-                user: user
-            });
-        });
+    var ghuser = client.user(event.params.org);
+    
+    ghuser.repos(function(err, org) {
+        context.succeed(org);
     });
+
 };
