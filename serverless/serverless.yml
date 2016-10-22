@@ -31,8 +31,8 @@ custom:
   stage: ${opt:stage, self:provider.stage}
   writeEnvVars:
     REMOTE_STAGE: ${self:custom.stage}
-    GITHUB_CLIENT_SECRET: ${opt:client_id}
-    GITHUB_CLIENT_ID: ${opt:client_secret}
+    CLIENT_ID: ${opt:client_id}
+    CLIENT_SECRET: ${opt:client_secret}
 
 functions:
   authorize:
