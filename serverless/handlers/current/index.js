@@ -1,11 +1,11 @@
 'use strict';
 
 var github = require('octonode'),
+    eventParse = require('../eventParse'),
     env = require('dotenv').config();
 
 module.exports.handler = (event, context, cb) => {
-    event.params = JSON.parse(event.params || "{}");
-    event.headers = JSON.parse(event.headers || "{}");
+    eventParse(event);
 
     var client = github.client(event.headers.Authorization);
     var ghme = client.me();

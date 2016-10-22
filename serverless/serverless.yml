@@ -36,7 +36,7 @@ custom:
 
 functions:
   authorize:
-    handler: authorize/index.handler
+    handler: handlers/authorize/index.handler
     events:
       - http:
           method: GET
@@ -45,7 +45,7 @@ functions:
           cors: true
           request: ${file(./templates.yml):request}
   current:
-    handler: current/index.handler
+    handler: handlers/current/index.handler
     events:
       - http:
           method: GET
@@ -54,7 +54,7 @@ functions:
           cors: true
           request: ${file(./templates.yml):request}
   repos:
-    handler: repos/index.handler
+    handler: handlers/repos/index.handler
     events:
       - http:
           method: GET
