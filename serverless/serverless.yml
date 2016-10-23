@@ -25,14 +25,9 @@ provider:
 
 plugins:
   - serverless-offline
-  - serverless-plugin-write-env-vars
 
 custom:
   stage: ${opt:stage, self:provider.stage}
-  writeEnvVars:
-    REMOTE_STAGE: ${self:custom.stage}
-    GITHUB_ID: ${opt:github_id}
-    GITHUB_SECRET: ${opt:github_secret}
 
 functions:
   authorize:
@@ -44,21 +39,12 @@ functions:
           integration: lambda
           cors: true
           request: ${file(./templates.yml):request}
-  current:
-    handler: handlers/current/index.handler
-    events:
-      - http:
-          method: GET
-          path: current
-          integration: lambda
-          cors: true
-          request: ${file(./templates.yml):request}
   repos:
     handler: handlers/repos/index.handler
     events:
       - http:
           method: GET
-          path: repos/{org}
+          path: repos/{org}/from/{from}/to/{to}
           integration: lambda
           cors: true
           request: ${file(./templates.yml):request}

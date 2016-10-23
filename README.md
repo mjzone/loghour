@@ -25,21 +25,21 @@ http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html
 2) Set Up the AWS Command Line Interface
 http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html
 
-* Configure github app for development
+* Configure github app for deployment and running in local
 
 1) Create a file called .env inside serverless folder
 
 2) Add the following content inside
 ```
-REMOTE_STAGE=dev
 GITHUB_ID=<github-client-id>
 GITHUB_SECRET=<github-client-secret>
+MONGO_CONNECT=<mongodb-connection-string>
 ```
 
 Note: Here dev stage is used as the development stage
 
 3) Go to the project root folder and execute the following command
 ```
-gulp deploy-api --stage dev --github_id <github-client-id> --github_secret <github-client-secret>
+gulp deploy-api --stage dev
 ```
 Note:- Here 'dev' is the Stage and You can use a different Stage also. To find github app information go to https://github.com/settings/applications/new
