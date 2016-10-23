@@ -31,8 +31,8 @@ module.exports.handler = (event, context, cb) => {
             to: event.params.to
         }).then((queriedRepos) => {
             var resultRepos = _.filter(queriedRepos, (repo) => {
-              return repo.time_entry.total;
-            })
+              return _.keys(repo.time_logs).length;
+            });
             context.succeed(resultRepos);
         });
     });

@@ -34,7 +34,7 @@ var processComments = (github, repo, filter) => {
             comments = filterComments(comments, filter);
             comments = project(comments, ['id', 'html_url', 'created_at', 'updated_at', 'body']);
             repo.comments = comments;
-            repo.time_entry = timeEngine.repoTime(comments);
+            repo.time_logs = timeEngine.repoTime(comments, filter);
             error ? reject(error) : resolve(comments);
         });
     });

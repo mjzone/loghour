@@ -5,44 +5,54 @@ var Promise = require("bluebird"),
     mongodb = require('mongodb');
 
 var getHours = (text) => {
-    return text.match(/(\s|\b)[0-9]*\.?[0-9]+h(\s|$|[0-9]+m)/g) || [];
+    return text.match(/(\s|\b)[0-9]*\.?[0-9]+h(\s|$|[0-9]+m)(\(\d{4}-\d{1,2}-\d{1,2}\))?/g) || [];
 };
 
 var getMinutes = (text) => {
-    return text.match(/(\s|\b|[0-9]+h)[0-9]+m(\s|$)/g) || [];
+    return text.match(/(\s|\b|[0-9]+h)[0-9]+m(\s|$|\(\d{4}-\d{1,2}-\d{1,2}\))/g) || [];
 };
 
-var countHours = (text) => {
-    var hours = getHours(text);
-    return _.sumBy(hours, function(hour) {
-        return Number(hour.match(/[0-9]*\.?[0-9]+/));
-    }) || 0;
+var dateFormat = function(date) {
+    var mm = (date.getMonth() + 1).toString(); // getMonth() is zero-based
+    var dd = date.getDate().toString();
+    return date.getFullYear() + '-' + (mm[1] ? mm : '0' + mm) + '-' + (dd[1] ? dd : '0' + dd);
 };
 
-var countMinutes = (text) => {
-    var minutes = getMinutes(text);
-    return (_.sumBy(minutes, function(minute) {
-        return Number(_.first(minute.match(/[0-9]+m/)).match(/[0-9]+/));
-    }) / 60) || 0;
+var diffInDays = (a, b) => {
+    var _MS_PER_DAY = 1000 * 60 * 60 * 24;
+    // Discard the time and time-zone information.
+    var utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+    var utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+};
+
+var isWithin = (check, from, to) => {
+    return diffInDays(from, check) >= 0 && diffInDays(check, to) >= 0;
 };
 
 module.exports.hasTimeRecords = (text) => {
     return !!(getHours(text).length || getMinutes(text).length);
 };
 
-module.exports.repoTime = (comments) => {
-    return {
-        total: _.sumBy(comments, function(comment) {
-            return countHours(comment.body) + countMinutes(comment.body);
-        })
-    };
-};
-
-module.exports.totalTime = (repos) => {
-    //TODO: Write logic to calculate repoTime by individual Day
-    return {
-        total: _.sumBy(repos, function(repo) {
-            return repo.time_entry.total;
-        })
-    };
+module.exports.repoTime = (comments, filter) => {
+    var results = {}
+    _.each(comments, (comment) => {
+        var hours = getHours(comment.body),
+            minutes = getMinutes(comment.body);
+        _.each(hours, (hour) => {
+            var hourCount = Number(_.first(hour.match(/[0-9]*\.?[0-9]+/))) || 0;
+            var hourDate = new Date(_.first(hour.match(/\d{4}-\d{1,2}-\d{1,2}/)) || comment.created_at);
+            if (isWithin(hourDate, new Date(filter.from), new Date(filter.to))) {
+                results[dateFormat(hourDate)] = hourCount;
+            }
+        });
+        _.each(minutes, (minute) => {
+            var minuteCount = (Number(_.first(minute.match(/[0-9]+m/)).match(/[0-9]+/)) / 60) || 0;
+            var minuteDate = new Date(_.first(minute.match(/\d{4}-\d{1,2}-\d{1,2}/)) || comment.created_at);
+            if (isWithin(minuteDate, new Date(filter.from), new Date(filter.to))) {
+                results[dateFormat(minuteDate)] = results[minuteDate] ? (results[minuteDate] + minuteCount) : minuteCount;
+            }
+        });
+    })
+    return results;
 };
