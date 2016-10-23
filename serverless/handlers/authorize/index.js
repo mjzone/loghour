@@ -1,11 +1,10 @@
 'use strict';
 
-var github = require('octonode'),
-    eventParse = require('../eventParse'),
-    env = require('dotenv').config();
+var setup = require('../setup'),
+    github = require('octonode');
 
 module.exports.handler = (event, context, cb) => {
-    eventParse(event);
+    setup(event);
 
     github.auth.config({
         id: process.env.GITHUB_ID,
@@ -18,9 +17,13 @@ module.exports.handler = (event, context, cb) => {
         var ghme = client.me();
 
         ghme.info(function(err, user) {
-            context.succeed({
-                token: token,
-                user: user
+            var ghuser = client.user(user.login);
+            ghuser.orgs(function(err, orgs) {
+                context.succeed({
+                    token: token,
+                    orgs: orgs,
+                    user: user
+                });
             });
         });
     });
