@@ -13,8 +13,15 @@ module.exports.handler = (event, context, cb) => {
     });
 
     github.auth.login(event.params.code, function(err, token) {
-        context.succeed({
-            token: token
+
+        var client = github.client(token);
+        var ghme = client.me();
+
+        ghme.info(function(err, user) {
+            context.succeed({
+                token: token,
+                user: user
+            });
         });
     });
 };
