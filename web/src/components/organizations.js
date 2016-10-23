@@ -4,10 +4,6 @@ import { Link } from 'react-router';
 import Select from 'react-select';
 import GHService from '../services/githubservice';
 
-const BASE_URL = 'http://localhost:3000';
-var todos = [],
-    options = [];
-
 export default class Organizations extends React.Component {
     constructor(props) {
         super(props);
@@ -21,9 +17,10 @@ export default class Organizations extends React.Component {
     }
 
     init() {
-        var self = this;
-        GHService.getOrgList('mjzone').then(function (data) { 
-            self.setState({ organizations: ["org1", "org2", "org3"] });
+        let self = this;
+        GHService.getOrgList('rehrumesh').then(function (response) { 
+            let orgs = _.map(response.data, (org, idx) => org["login"]);
+            self.setState({ organizations: orgs});
         }, function (err) { console.log(err); });
     }
 
@@ -39,22 +36,23 @@ export default class Organizations extends React.Component {
     orgHandler(org) {
         var self = this;
         this.setState({ selectedOrg: org.value });
-         GHService.getOrgList('mjzone').then(function (data) { 
-            self.setState({ repos: ["repo1", "repo2", "repo3", "repo4", "repo5"] });
+        GHService.getRepoList(org.value).then(function (response) { 
+            let repos = _.map(response.data, (repo, idx) => repo["name"]);
+            self.setState({ repos: repos });
              
         }, function (err) { console.log(err); });
     }
 
     renderRepos() {
-        return _.map(this.state.repos, (repo, index) => <li><Link to={`organizations/${this.state.selectedOrg}/projects/${repo}`}>{repo}</Link></li>);
+        return _.map(this.state.repos, (repo, index) => <li><Link to={`organizations/${this.state.selectedOrg}/repos/${repo}`}>{repo}</Link></li>);
     }
-
+ 
     render() {
         var self = this;
         return (
             <div>
                 <div className="row large-6 large-offset-5 medium-6 medium-offset-5 small-6 small-offset-5 columns">
-                    <h1>Select your organization</h1>
+                    <h4>Select your organization</h4>
                     <Select
                         name="organizations-list"
                         value={self.state.selectedOrg}
