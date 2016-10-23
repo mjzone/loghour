@@ -9,23 +9,29 @@ var Promise = require("bluebird"),
         comments: []
     };
 
+var filterIssues = (issues) => {
+    return _.filter(issues, function(issue) {
+        return issue.time_entry && issue.time_entry.total > 0;
+    }) || [];
+};
+
+var processComments = (client, repo, issues, user) => {
+    _.each(issues, function(issue) {
+        issue.comments > 0 && processing.comments.push(includeComments(client, repo, issue, user));
+    });
+};
+
 var includeIssues = (client, repo, filter) => {
     return new Promise(function(resolve, reject) {
         var ghrepo = client.repo(repo.full_name);
         ghrepo.issues({
             since: (new Date(filter.from)).toISOString()
         }, function(error, issues) {
-            _.each(issues, function(issue) {
-                if (issue.comments > 0) {
-                    processing.comments.push(includeComments(client, repo, issue, filter.user));
-                } else {
-                    issue.time_entry = 0;
-                }
-            });
+            processComments(client, repo, issues, filter.user);
             Promise.all(processing.comments).then(function() {
-                repo.issues = issues;
-                repo.time_entry = timeEngine.repoTime(issues);
-                error ? reject(error) : resolve(issues);
+                repo.issues = filterIssues(issues);
+                repo.time_entry = timeEngine.repoTime(repo.issues);
+                error ? reject(error) : resolve(repo.issues);
             });
         });
     });
