@@ -9,15 +9,15 @@ var Promise = require("bluebird"),
         comments: []
     };
 
-var includeIssues = (client, repo, since) => {
+var includeIssues = (client, repo, filter) => {
     return new Promise(function(resolve, reject) {
         var ghrepo = client.repo(repo.full_name);
         ghrepo.issues({
-            since: (new Date(since)).toISOString()
+            since: (new Date(filter.from)).toISOString()
         }, function(error, issues) {
             _.each(issues, function(issue) {
                 if (issue.comments > 0) {
-                    processing.comments.push(includeComments(client, repo, issue));
+                    processing.comments.push(includeComments(client, repo, issue, filter.user));
                 } else {
                     issue.time_entry = 0;
                 }
@@ -31,20 +31,22 @@ var includeIssues = (client, repo, since) => {
     });
 };
 
-var includeComments = (client, repo, issue) => {
+var includeComments = (client, repo, issue, user) => {
     return new Promise(function(resolve, reject) {
         var ghissue = client.issue(repo.full_name, issue.number);
         ghissue.comments(function(error, comments) {
-            issue.comments = comments;
+            issue.comments = !user ? comments : _.filter(comments, (comment) => {
+                return comment.user.login.toLowerCase() === user.toLowerCase()
+            });
             issue.time_entry = timeEngine.issueTime(comments);
             error ? reject(error) : resolve(comments);
         });
     });
 };
 
-module.exports.query = (client, repos, range) => {
+module.exports.query = (client, repos, filter) => {
     _.each(repos, function(repo) {
-        processing.issues.push(includeIssues(client, repo, range.from));
+        processing.issues.push(includeIssues(client, repo, filter));
     });
     return new Promise(function(resolve, reject) {
         Promise.all(processing.issues).then(function(error) {

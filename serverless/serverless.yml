@@ -44,7 +44,7 @@ functions:
     events:
       - http:
           method: GET
-          path: repos/{org}/from/{from}/to/{to}
+          path: repos/{org}/from/{from}/to/{to}/user/{user}
           integration: lambda
           cors: true
           request: ${file(./templates.yml):request}

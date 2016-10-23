@@ -11,6 +11,7 @@ module.exports.handler = (event, context, cb) => {
     var ghuser = client.user(event.params.org);
     ghuser.repos(function(err, repos) {
         queryEngine.query(client, repos, {
+            user: event.params.user,
             from: event.params.from,
             to: event.params.to
         }).then(function(queriedRepos) {
