@@ -1,18 +1,30 @@
 'use strict';
 
-var parser = require('../parser'),
-    request = require('request');
+var setup = require('../setup'),
+    github = require('octonode');
 
 module.exports.handler = (event, context, cb) => {
-    var event = parser.parseEvent(event);
-    request('https://github.com/login/oauth/access_token?client_id=' + process.env.GITHUB_CLIENT_ID + '&client_secret=' + process.env.GITHUB_CLIENT_SECRET + '&code=' + event.params.code,
-        function(error, response, body) {
-            if (!error && response.statusCode == 200 && body.indexOf("access_token") !== -1) {
+    setup(event);
+
+    github.auth.config({
+        id: process.env.GITHUB_ID,
+        secret: process.env.GITHUB_SECRET
+    });
+
+    github.auth.login(event.params.code, function(err, token) {
+
+        var client = github.client(token);
+        var ghme = client.me();
+
+        ghme.info(function(err, user) {
+            var ghuser = client.user(user.login);
+            ghuser.orgs(function(err, orgs) {
                 context.succeed({
-                    response: body
+                    token: token,
+                    orgs: orgs,
+                    user: user
                 });
-            } else {
-                context.fail(body);
-            }
+            });
         });
+    });
 };
