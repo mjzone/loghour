@@ -18,7 +18,7 @@ export default class Organizations extends React.Component {
 
     init() {
         let self = this;
-        GHService.getOrgList('rehrumesh').then(function (response) { 
+        GHService.getOrgList(localStorage.getItem('userName')).then(function (response) { 
             let orgs = _.map(response.data, (org, idx) => org["login"]);
             self.setState({ organizations: orgs});
         }, function (err) { console.log(err); });

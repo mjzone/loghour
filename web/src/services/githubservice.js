@@ -7,7 +7,7 @@ var instance = axios.create({
     }
 });
 
-module.exports.getToken = (code) => axios.get('https://19xickfd0c.execute-api.eu-west-1.amazonaws.com/dev/authorize/'+ code);
+module.exports.getToken = (code) => axios.get('https://yo3js5u9d3.execute-api.eu-west-1.amazonaws.com/api/authorize/'+ code);
     
 module.exports.getOrgList = (userName) => instance.get('users/' + userName + '/orgs');
 

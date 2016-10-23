@@ -9,16 +9,12 @@ import actions from 'actions/actions';
 import GHService from 'services/githubservice';
 
 var requireLogin = (nextState, replace, next) => {
-    let code = nextState.location.query.code;
-    // move this insid the code block
-    localStorage.setItem('token', 'b5d99930784b85c51e44d87263199abbcedfa035');
-    localStorage.setItem('userName', 'rehrumesh');
+    let code = nextState.location.query.code;    
     if (code) {
         GHService.getToken(code).then(function (response) {
-            localStorage.setItem('token', response.token);
-            localStorage.setItem('userName', response.user.login);
-        }, function (err) { console.log(err);});
-       
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('userName', response.data.user.login);
+        }, function (err) { console.log(err);});       
     }
     if (!localStorage.getItem('token') && !nextState.location.query.code) {
         replace('/login');
