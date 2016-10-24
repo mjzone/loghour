@@ -1,6 +1,7 @@
 # loghour
 
 [![Join the chat at https://gitter.im/99xt/loghour](https://badges.gitter.im/99xt/loghour.svg)](https://gitter.im/99xt/loghour?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f88bcbf9339d4ffe9e79c9d0c5d9ad23)](https://www.codacy.com/app/99xt/loghour?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=99xt/loghour&amp;utm_campaign=Badge_Grade)
 
 Time Tracker hub for Geeks.
 
