@@ -39,18 +39,25 @@ module.exports.repoTime = (comments, filter) => {
     _.each(comments, (comment) => {
         var hours = getHours(comment.body),
             minutes = getMinutes(comment.body);
+        comment.time_logs = {};
         _.each(hours, (hour) => {
             var hourCount = Number(_.first(hour.match(/[0-9]*\.?[0-9]+/))) || 0;
             var hourDate = new Date(_.first(hour.match(/\d{4}-\d{1,2}-\d{1,2}/)) || comment.created_at);
+
             if (isWithin(hourDate, new Date(filter.from), new Date(filter.to))) {
-                results[dateFormat(hourDate)] = hourCount;
+                var date = dateFormat(hourDate);
+                comment.time_logs[date] = comment.time_logs[date] ? (comment.time_logs[date] + hourCount) : hourCount;
+                results[date] = comment.time_logs[date];
             }
         });
         _.each(minutes, (minute) => {
             var minuteCount = (Number(_.first(minute.match(/[0-9]+m/)).match(/[0-9]+/)) / 60) || 0;
             var minuteDate = new Date(_.first(minute.match(/\d{4}-\d{1,2}-\d{1,2}/)) || comment.created_at);
+
             if (isWithin(minuteDate, new Date(filter.from), new Date(filter.to))) {
-                results[dateFormat(minuteDate)] = results[minuteDate] ? (results[minuteDate] + minuteCount) : minuteCount;
+                var date = dateFormat(minuteDate);
+                comment.time_logs[date] = comment.time_logs[date] ? (comment.time_logs[date] + minuteCount) : minuteCount;
+                results[date] = comment.time_logs[date];
             }
         });
     })
