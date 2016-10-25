@@ -1,40 +1,19 @@
 import axios from 'axios';
-var USER_TOKEN = 'YOUR TOKEN HERE';
+var USER_TOKEN = "b5d99930784b85c51e44d87263199abbcedfa035";
 var instance = axios.create({
     baseURL: 'https://api.github.com/',
     headers: {
-        'Authorization': 'token ' + USER_TOKEN //TO-DO dynamically aquiring the token
+        'Authorization': 'token ' + USER_TOKEN 
     }
 });
 
-//asume user token with either user scope or read:org
-module.exports.getOrgList = function(userName) {
-    //GET /users/:username/orgs
+module.exports.getToken = (code) => axios.get('https://yo3js5u9d3.execute-api.eu-west-1.amazonaws.com/api/authorize/'+ code);
+    
+module.exports.getOrgList = (userName) => instance.get('users/' + userName + '/orgs');
 
-    return instance.get('users/' + userName + '/orgs'); //returns a promise
+module.exports.getRepoList = (orgName) => instance.get("orgs/"+orgName+"/repos");
 
-};
+module.exports.getIssuesOfRepo = (userName, repoName) => instance.get('repos/' + userName + '/' + repoName + "/issues?state=all");  
 
-module.exports.getRepoList = function(name, type) {
-    //type: 'users' | 'orgs'
-    //GET /users/:username/repos
-    //GET /orgs/:org/repos
+module.exports.getCommentsOfIssue = (repoOwner, repoName, issueId) => instance.get('repos/' + userName + '/' + repoName + "/issues/"+issueId+"/comments");    
 
-
-    // axios.all([instance.get('users/rehrumesh/repos'), instance.get('orgs/99xt/repos')])
-    // .then(axios.spread(function(acct, perms) {
-    //     debugger;
-    // }));
-    //
-    return instance.get("/"+type+"/"+name+"/repos");
-};
-
-module.exports.getIssuesOfRepo = function(repoOwner, repoName) {
-    //GET /repos/:owner/:repo/issues?state=all  //default state: open
-    return instance.get('repors/' + userName + '/' + repoName + "/issues?state=all");   //TO-DO test api call
-};
-
-module.exports.getCommentsOfIssue = function(repoOwner, repoName, issueId) {
-    //GET /repos/:owner/:repo/issues/:issueId/comments
-    return instance.get('repors/' + userName + '/' + repoName + "/issues/"+issueId+"/comments");     //TO-DO test api call
-};
