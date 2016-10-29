@@ -1,5 +1,5 @@
 import * as types from './actionTypes';
 
-export function setUserInfoState(user) {
+export function setUserState(user) {
     return { type: types.SET_USER_STATE, user };
 }

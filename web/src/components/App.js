@@ -22,7 +22,6 @@ class App extends React.Component{
             if(this.props.location.query.code){
                api.getToken(this.props.location.query.code).then(
                 (result) => {
-                    debugger;
                     localStorage.setItem('token', JSON.stringify(result.data.token));
                     localStorage.setItem('user', JSON.stringify(result.data.user));
                     localStorage.setItem('orgs', JSON.stringify(result.data.orgs));
@@ -35,7 +34,7 @@ class App extends React.Component{
     }
 
     initialize(){
-        this.props.userActions.setUserInfoState(JSON.parse(localStorage.getItem('user')));
+        this.props.userActions.setUserState(JSON.parse(localStorage.getItem('user')));
         this.props.orgActions.setOrgsState(JSON.parse(localStorage.getItem('orgs')));
         this.context.router.push('/organizations');
     }
