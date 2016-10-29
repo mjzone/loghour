@@ -7,7 +7,7 @@ import * as userActions from '../actions/userActions';
 import * as orgsActions from '../actions/organizationActions';
 import * as api from '../services/githubService';
 
-class App extends React.Component{   
+class App extends React.Component{
     constructor(props, context){
         super(props, context);
         this.initialize = this.initialize.bind(this);
@@ -25,19 +25,18 @@ class App extends React.Component{
                     debugger;
                     localStorage.setItem('token', JSON.stringify(result.data.token));
                     localStorage.setItem('user', JSON.stringify(result.data.user));
-                    localStorage.setItem('orgs', JSON.stringify(result.data.orgs));                       
-                    this.initialize();    
+                    localStorage.setItem('orgs', JSON.stringify(result.data.orgs));
+                    this.initialize();
                 }, (err) => {
                     throw ('Error: '+ err);
-                } 
+                }
             );
-        } 
+        }
     }
 
-    initialize(){  
-        this.props.userActions.setUserLoginState(true);   
-        this.props.userActions.setUserInfoState(JSON.parse(localStorage.getItem('user'))); 
-        this.props.orgActions.setOrgsState(JSON.parse(localStorage.getItem('orgs'))); 
+    initialize(){
+        this.props.userActions.setUserInfoState(JSON.parse(localStorage.getItem('user')));
+        this.props.orgActions.setOrgsState(JSON.parse(localStorage.getItem('orgs')));
         this.context.router.push('/organizations');
     }
 
@@ -45,19 +44,18 @@ class App extends React.Component{
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         localStorage.removeItem('orgs');
-        this.props.userActions.setUserLoginState(false); 
         this.context.router.push('/');
-    } 
+    }
 
-    render() {      
-        let {user, orgs} = this.props;  
-        if (!user.isLoggedIn &&  !localStorage.getItem('token')) {
+    render() {
+        let {user, orgs} = this.props;
+        if (!localStorage.getItem('token')) {
             return <Login/>;
-        }    
+        }
         return (
             <div>
-                <Header logout={this.logout}/>
-                <div className="container-fluid">                    
+                <Header logout={this.logout} user={this.props.user}/>
+                <div className="container-fluid">
                     {this.props.children}
                 </div>
             </div>
