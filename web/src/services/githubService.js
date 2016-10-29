@@ -1,5 +1,6 @@
 import axios from 'axios';
-const USER_TOKEN = localStorage.getItem('token');
+import * as store from 'store';
+const USER_TOKEN = store.get('token');
 
 let instance = axios.create({
     baseURL: '/api/',

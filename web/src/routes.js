@@ -1,11 +1,12 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
+import * as store from 'store';
 import App from './components/App';
 import OrganizationPage from './components/organization/OrganizationPage';
 import IssuesPage from './components/issues/IssuesPage';
 
 let requireLogin = (nextState, replace, next) => {
-    if (!localStorage.getItem('token')) {
+    if (!store.get('token')) {
         replace('/');
     }
     next();

@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import Login from './login/LoginPage';
 import Header from './common/Header';
+import store from 'store';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from '../actions/userActions';
@@ -15,16 +16,16 @@ class App extends React.Component{
     }
 
     componentWillMount(){
-            if(localStorage.getItem('token')){
+            if(store.get('token')){
                 this.initialize();
             }
 
             if(this.props.location.query.code){
                api.getToken(this.props.location.query.code).then(
                 (result) => {
-                    localStorage.setItem('token', JSON.stringify(result.data.token));
-                    localStorage.setItem('user', JSON.stringify(result.data.user));
-                    localStorage.setItem('orgs', JSON.stringify(result.data.orgs));
+                    store.set('token', result.data.token);
+                    store.set('user', result.data.user);
+                    store.set('orgs', result.data.orgs);
                     this.initialize();
                 }, (err) => {
                     throw ('Error: '+ err);
@@ -34,21 +35,19 @@ class App extends React.Component{
     }
 
     initialize(){
-        this.props.userActions.setUserState(JSON.parse(localStorage.getItem('user')));
-        this.props.orgActions.setOrgsState(JSON.parse(localStorage.getItem('orgs')));
+        this.props.userActions.setUserState(store.get('user'));
+        this.props.orgActions.setOrgsState(store.get('orgs'));
         this.context.router.push('/organizations');
     }
 
     logout(){
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        localStorage.removeItem('orgs');
+        store.clear();
         this.context.router.push('/');
     }
 
     render() {
         let {user, orgs} = this.props;
-        if (!localStorage.getItem('token')) {
+        if (!store.get('token')) {
             return <Login/>;
         }
         return (
