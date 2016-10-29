@@ -17,8 +17,8 @@ const OrganizationList = organizations => {
                 )}
             </tbody>
         </table>
-    )
-}
+    );
+};
 
 OrganizationList.propTypes = {
     organizations: PropTypes.array.isRequired

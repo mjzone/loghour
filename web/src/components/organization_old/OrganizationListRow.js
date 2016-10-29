@@ -7,8 +7,8 @@ const OrganizationListRow = organization => {
             <td><a href={organization.url} target="_blank">View on Github</a></td>
             <td><Link to={'/organization/' + organization.id}>{organization.title}</Link></td>
         </tr>
-    )
-}
+    );
+};
 
 OrganizationListRow.propTypes = {
     organization: PropTypes.object.isRequired

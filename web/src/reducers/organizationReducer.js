@@ -1,19 +1,11 @@
 import * as types from '../actions/actionTypes';
+import initialState from './initialState';
 
-export default function organizationReducer(state = [], action) {
+export default function organizationReducer(state = initialState.orgs, action) {
     switch (action.type) {
-        case types.LOAD_REPOS_SUCCESS:
-            return action.organizations;
+        case types.SET_ORGS_STATE:
+            return  (action.orgs) ? [].concat(state, action.orgs): state;
         default:
             return state;            
     }
 }
-
-// export default function organizationReducer(state = [], action) {
-//     switch (action.type) {
-//         case types.CREATE_ORGANIZATION:
-//             return [...state, Object.assign({}, action.organization)];
-//         default:
-//             return state;            
-//     }
-// }

@@ -1,14 +1,20 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from './components/App';
-import HomePage from './components/home/HomePage';
-import AboutPage from './components/about/AboutPage';
-import OrganizationsPage from './components/organization/OrganizationsPage';
+import OrganizationPage from './components/organization/OrganizationPage';
+import IssuesPage from './components/issues/IssuesPage';
+
+let requireLogin = (nextState, replace, next) => {
+    if (!localStorage.getItem('token')) {
+        replace('/');
+    }
+    next();
+};
 
 export default (
     <Route path="/" component={App}>
-        <IndexRoute component={HomePage} />
-        <Route path="organizations" component={OrganizationsPage}/>
-        <Route path="about" component={AboutPage}/>
-    </Route>  
+        <Route path="/organizations" component={OrganizationPage} onEnter={requireLogin}>
+            <Route path="/issues" component={IssuesPage}></Route>
+        </Route>
+    </Route>
 );

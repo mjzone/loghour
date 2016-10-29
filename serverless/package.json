@@ -18,6 +18,6 @@
     "octonode": "^0.7.6"
   },
   "devDependencies": {
-    "serverless-offline": "git+https://github.com/dherault/serverless-offline.git/#serverless_v1"
+    "serverless-offline": "git+https://github.com/dherault/serverless-offline.git"
   }
 }
