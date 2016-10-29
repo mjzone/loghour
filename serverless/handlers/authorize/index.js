@@ -11,7 +11,10 @@ module.exports.handler = (event, context, cb) => {
         secret: process.env.GITHUB_SECRET
     });
 
-    github.auth.login(event.params.code, function(err, token) {
+    github.auth.login(event.params.code, function(error, token) {
+        if (error) {
+            return context.fail(error);
+        }
         var client = github.client(token),
             ghme = client.me(),
             response = {
