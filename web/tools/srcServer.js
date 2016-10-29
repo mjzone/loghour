@@ -1,4 +1,5 @@
 import express from 'express';
+import proxy from 'express-http-proxy';
 import webpack from 'webpack';
 import path from 'path';
 import config from '../webpack.config.dev';
@@ -17,8 +18,14 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 app.use(require('webpack-hot-middleware')(compiler));
 
+app.use("/api/*", proxy('http://localhost:3000', {
+  forwardPath: function(req, res) {
+    return require('url').parse(req.baseUrl).path;
+  }
+}));
+
 app.get('*', function(req, res) {
-  res.sendFile(path.join( __dirname, '../src/index.html'));
+  res.sendFile(path.join(__dirname, '../src/index.html'));
 });
 
 app.listen(port, function(err) {

@@ -21,17 +21,12 @@ function runCommand(cmd, done) {
 
 /* Start offline server for local development */
 gulp.task('start-offline-server', function(done) {
-    runCommand('cd serverless ' + commandSeparator + 'serverless offline start', done);
+    runCommand('cd serverless ' + commandSeparator + 'serverless offline start --prefix api', done);
 });
 
 /* Start offline server for local development */
 gulp.task('start-client', function(done) {
-    runCommand('cd web ' + commandSeparator + 'webpack-dev-server', done);
-});
-
-/* Start offline server for local development */
-gulp.task('open-website', function(done) {
-    require("opn")("http://localhost:8080");
+    runCommand('cd web ' + commandSeparator + 'npm start', done);
 });
 
 /* Deploy Lambdas and API Gateway to AWS */
@@ -43,4 +38,4 @@ gulp.task('deploy-api', function(cb) {
 gulp.task('deploy', gulpSequence(['deploy-api']));
 
 /* Start application locally */
-gulp.task('serve', gulpSequence(['start-client', 'open-website', 'start-offline-server']));
+gulp.task('serve', gulpSequence(['start-client', 'start-offline-server']));
