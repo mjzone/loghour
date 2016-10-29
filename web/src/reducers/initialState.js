@@ -1,8 +1,6 @@
 export default {
-    user: {
-        info: [],
-        isLoggedIn: false
-    },
-    orgs: [],    
+    token: "",
+    user: {},
+    orgs: [],
     ajaxCallsInProgress: 0
 };

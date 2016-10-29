@@ -12,7 +12,7 @@ class OrganizationPage extends React.Component{
         return (
             <div>
                 <h2> Organizations </h2>
-                {_.map(orgs, (org, index) => <h3><Link key={index} to={'/issues'}>{org.login}</Link></h3>)}
+                {_.map(orgs, (org) => <h3 key={org.id} ><Link key={org.id} to={'/issues'}>{org.login}</Link></h3>)}
                 {this.props.children}
             </div>
         );
