@@ -15,7 +15,7 @@ let requireLogin = (nextState, replace, next) => {
 export default (
     <Route path="/" component={App}>
         <Route path="/organizations" component={OrganizationPage} onEnter={requireLogin}>
-            <Route path="/issues" component={IssuesPage}></Route>
+            <Route path="/issues/:orgId" component={IssuesPage}></Route>
         </Route>
     </Route>
 );
