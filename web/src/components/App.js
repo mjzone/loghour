@@ -20,8 +20,7 @@ class App extends React.Component{
             if(store.get('token')){
                 this.initialize();
             }
-
-            if(this.props.location.query.code){
+            else if(this.props.location.query.code){
                api.getToken(this.props.location.query.code).then(
                 (result) => {
                     store.set('token', result.data.token);
@@ -40,7 +39,15 @@ class App extends React.Component{
         this.props.userActions.setUserState(store.get('user'));
         this.props.orgsActions.setOrgsState(store.get('orgs'));
         this.props.orgActions.selectOrgState(store.get('org'));
+        this.redirect();
+    }
+
+    redirect(){
+      if(store.get('org')){
+        this.context.router.push('/issues/' + store.get('org').login);
+      }else{
         this.context.router.push('/organizations');
+      }
     }
 
     logout(){
