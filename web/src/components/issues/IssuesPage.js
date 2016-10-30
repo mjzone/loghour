@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from '../../actions/userActions';
-import * as orgsActions from '../../actions/organizationActions';
+import * as orgsActions from '../../actions/orgsActions';
 import * as api from '../../services/githubService';
 
 class IssuesPage extends React.Component{
@@ -37,7 +37,7 @@ IssuesPage.propTypes = {
 function mapStatesToProps(state, ownProps) {
     return {
         user: state.user,
-        orgs: state.organizations
+        orgs: state.orgs
     };
 }
 
