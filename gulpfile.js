@@ -26,6 +26,7 @@ gulp.task('start-offline-server', function(done) {
 
 /* Start offline server for local development */
 gulp.task('start-client', function(done) {
+    process.env.IS_OFFLINE = true;
     runCommand('cd web ' + commandSeparator + 'npm start', done);
 });
 
