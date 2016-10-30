@@ -1,3 +1,4 @@
 export const BEGIN_AJAX_CALL = 'BEGIN_AJAX_CALL';
 export const SET_USER_STATE = 'SET_USER_STATE';
 export const SET_ORGS_STATE = 'SET_ORGS_STATE';
+export const SELECT_ORG_STATE = 'SELECT_ORG_STATE';

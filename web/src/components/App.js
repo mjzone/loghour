@@ -5,7 +5,8 @@ import store from 'store';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from '../actions/userActions';
-import * as orgsActions from '../actions/organizationActions';
+import * as orgsActions from '../actions/orgsActions';
+import * as orgActions from '../actions/orgActions';
 import * as api from '../services/githubService';
 
 class App extends React.Component{
@@ -26,6 +27,7 @@ class App extends React.Component{
                     store.set('token', result.data.token);
                     store.set('user', result.data.user);
                     store.set('orgs', result.data.orgs);
+                    store.set('org', result.data.org);
                     this.initialize();
                 }, (err) => {
                     throw ('Error: '+ err);
@@ -36,7 +38,8 @@ class App extends React.Component{
 
     initialize(){
         this.props.userActions.setUserState(store.get('user'));
-        this.props.orgActions.setOrgsState(store.get('orgs'));
+        this.props.orgsActions.setOrgsState(store.get('orgs'));
+        this.props.orgActions.selectOrgState(store.get('org'));
         this.context.router.push('/organizations');
     }
 
@@ -46,13 +49,13 @@ class App extends React.Component{
     }
 
     render() {
-        let {user, orgs} = this.props;
+        let {user, orgs, org} = this.props;
         if (!store.get('token')) {
             return <Login/>;
         }
         return (
             <div>
-                <Header logout={this.logout} user={this.props.user}/>
+                <Header logout={this.logout} user={this.props.user} selectedOrg={this.props.org}/>
                 <div className="container-fluid">
                     {this.props.children}
                 </div>
@@ -64,6 +67,7 @@ class App extends React.Component{
 App.propTypes = {
     children: PropTypes.object,
     user: PropTypes.object,
+    org: PropTypes.object,
     orgs: PropTypes.array,
     location: PropTypes.object,
     userActions: PropTypes.object,
@@ -77,14 +81,16 @@ App.contextTypes = {
 function mapStatesToProps(state, ownProps) {
     return {
         user: state.user,
-        orgs: state.organizations
+        org: state.org,
+        orgs: state.orgs
     };
 }
 
 function mapActionsToDispatch(dispatch) {
     return {
         userActions: bindActionCreators(userActions, dispatch),
-        orgActions: bindActionCreators(orgsActions, dispatch)
+        orgActions: bindActionCreators(orgActions, dispatch),
+        orgsActions: bindActionCreators(orgsActions, dispatch)
     };
 }
 

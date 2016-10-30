@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import organizations from './organizationReducer';
+import orgs from './orgsReducer';
+import org from './orgReducer';
 import user from './userReducer';
 import ajaxCallsInProgress from './ajaxStatusReducer';
 
 const rootReducer = combineReducers({
-    organizations,
+    orgs,
+    org,
     user
 });
 
