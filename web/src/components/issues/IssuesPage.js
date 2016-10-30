@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from '../../actions/userActions';
-import * as orgsActions from '../../actions/orgsActions';
+import * as orgActions from '../../actions/orgActions';
 import * as api from '../../services/githubService';
 
 class IssuesPage extends React.Component{
@@ -17,7 +17,7 @@ class IssuesPage extends React.Component{
     }
 
     render() {
-        let {user, orgs} = this.props;
+        let {user, org} = this.props;
         return (
             <div>
                 <h2> Follwing are the issues list </h2>
@@ -29,7 +29,7 @@ class IssuesPage extends React.Component{
 IssuesPage.propTypes = {
     children: PropTypes.object,
     user: PropTypes.object,
-    orgs: PropTypes.array,
+    org: PropTypes.object,
     userActions: PropTypes.object,
     orgActions: PropTypes.object
 };
@@ -37,14 +37,14 @@ IssuesPage.propTypes = {
 function mapStatesToProps(state, ownProps) {
     return {
         user: state.user,
-        orgs: state.orgs
+        org: state.org
     };
 }
 
 function mapActionsToDispatch(dispatch) {
     return {
         userActions: bindActionCreators(userActions, dispatch),
-        orgActions: bindActionCreators(orgsActions, dispatch)
+        orgActions: bindActionCreators(orgActions, dispatch)
     };
 }
 
