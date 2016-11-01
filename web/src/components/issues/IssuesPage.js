@@ -38,7 +38,7 @@ class IssuesPage extends React.Component{
         total = total + sum;
         result[repo.name] = format(sum);
       });
-      return { repos: result, total: total };
+      return { repos: result, total: format(total) };
     }
 
     componentWillMount(){
@@ -53,8 +53,11 @@ class IssuesPage extends React.Component{
         let {user, params} = this.props, repos =  this.state.repos, counts = this.reposTotalCounts(this.state.repos);
         return (
           <div>
-              <h2> Organizations {params.login} </h2>
+              <h2> Organization: {params.orgId} </h2>
               {_.map(repos, (repo) => <div key={repo.id} ><h3>{repo.name}</h3><span>Total: {counts.repos[repo.name]}</span></div>)}
+              <hr/>
+                <h3> Total: {counts.total} </h3>
+              <hr/>
               {this.props.children}
           </div>
         );
