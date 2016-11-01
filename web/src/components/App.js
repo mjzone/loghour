@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import Login from './login/LoginPage';
 import Header from './common/Header';
 import store from 'store';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from '../actions/userActions';
@@ -14,6 +15,10 @@ class App extends React.Component{
         super(props, context);
         this.initialize = this.initialize.bind(this);
         this.logout = this.logout.bind(this);
+    }
+
+    setupAuthToken(token){
+        axios.defaults.headers.common['Authorization'] = store.get('token');
     }
 
     componentWillMount(){
@@ -39,6 +44,7 @@ class App extends React.Component{
         this.props.userActions.setUserState(store.get('user'));
         this.props.orgsActions.setOrgsState(store.get('orgs'));
         this.props.orgActions.selectOrgState(store.get('org'));
+        this.setupAuthToken(store.get('token'));
         this.redirect();
     }
 

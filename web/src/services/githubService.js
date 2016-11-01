@@ -6,11 +6,5 @@ export function getToken(code) {
 }
 
 export function getIssues(options) {
-  let instance = axios.create({
-    baseURL: '/api/',
-    headers: {
-      'Authorization': store.get('token')
-    }
-  });
-  return instance.get('repos/' + options.org + '/from/' + options.from + '/to/' + options.to + '/user/' + options.user);
+  return axios.get('/api/repos/' + options.org + '/from/' + options.from + '/to/' + options.to + '/user/' + options.user);
 }
