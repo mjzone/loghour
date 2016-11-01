@@ -5,11 +5,11 @@ var Promise = require("bluebird"),
     mongodb = require('mongodb');
 
 var getHours = (text) => {
-    return text.match(/(\s|\b)[0-9]*\.?[0-9]+h(\s|$|[0-9]+m)(\(\d{4}-\d{1,2}-\d{1,2}\))?/g) || [];
+    return text.match(/(\s|\b)[0-9]*\.?[0-9]+h(\s|$|[0-9]+m)?(\(\d{4}-\d{1,2}-\d{1,2}\))?/g) || [];
 };
 
 var getMinutes = (text) => {
-    return text.match(/(\s|\b|[0-9]+h)[0-9]+m(\s|$|\(\d{4}-\d{1,2}-\d{1,2}\))/g) || [];
+    return text.match(/(\s|\b|[0-9]+h)[0-9]+m(\s|$|\(\d{4}-\d{1,2}-\d{1,2}\))?/g) || [];
 };
 
 var dateFormat = function(date) {
@@ -31,6 +31,9 @@ var isWithin = (check, from, to) => {
 };
 
 module.exports.hasTimeRecords = (text) => {
+  console.log(text)
+  console.log(getHours(text))
+  console.log( getMinutes(text))
     return !!(getHours(text).length || getMinutes(text).length);
 };
 
