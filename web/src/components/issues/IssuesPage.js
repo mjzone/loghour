@@ -23,6 +23,24 @@ class IssuesPage extends React.Component{
       });
     }
 
+    formatTime(time){
+      let hours = Math.floor(time), minutes = Math.round(((time % 1) * 60));
+      return (hours? hours + 'h ' : '')  + (minutes? minutes + 'm': '');
+    }
+
+    reposTotalCounts(repos){
+      let result = {}, total = 0, format = this.formatTime;
+      _.each(repos, function(repo) {
+        let timeLogs = _.values(repo.time_logs), sum = 0;
+        _.each(timeLogs, function(log) {
+          sum = sum + log;
+        });
+        total = total + sum;
+        result[repo.name] = format(sum);
+      });
+      return { repos: result, total: format(total) };
+    }
+
     componentWillMount(){
         this.loadRepos({user : this.props.user.login, org: this.props.params.orgId,  from :'2016-10-01', to : '2016-10-31'});
     }
@@ -32,11 +50,14 @@ class IssuesPage extends React.Component{
     }
 
     render() {
-        let {user, params} = this.props, repos =  this.state.repos;
+        let {user, params} = this.props, repos =  this.state.repos, counts = this.reposTotalCounts(this.state.repos);
         return (
           <div>
-              <h2> Organizations {params.login} </h2>
-              {_.map(repos, (repo) => <h3 key={repo.id} >{repo.name}</h3>)}
+              <h2> Organization: {params.orgId} </h2>
+              {_.map(repos, (repo) => <div key={repo.id} ><h3>{repo.name}</h3><span>Total: {counts.repos[repo.name]}</span></div>)}
+              <hr/>
+                <h3> Total: {counts.total} </h3>
+              <hr/>
               {this.props.children}
           </div>
         );
