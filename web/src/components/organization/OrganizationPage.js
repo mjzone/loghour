@@ -45,8 +45,7 @@ function mapStatesToProps(state, ownProps) {
 function mapActionsToDispatch(dispatch) {
     return {
         userActions: bindActionCreators(userActions, dispatch),
-        orgActions: bindActionCreators(orgsActions, dispatch),
-        orgActions:  bindActionCreators(orgActions, dispatch),
+        orgActions: bindActionCreators(orgsActions, dispatch)
     };
 }
 

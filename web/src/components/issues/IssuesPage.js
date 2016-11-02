@@ -11,7 +11,15 @@ class IssuesPage extends React.Component{
        this.state = { repos: [], reposQueryInProgress: false};
     }
 
-    loadRepos(options){
+    componentWillMount(){
+        this.loadRepos({user : this.props.user.login, org: this.props.params.orgId,  from :'2016-10-01', to : '2016-10-31'});
+    }
+
+    componentWillReceiveProps(){
+        this.loadRepos({user : this.props.user.login, org: this.props.params.orgId,  from :'2016-10-01', to : '2016-10-31'});
+    }
+
+        loadRepos(options){
       let state = this.state;
       api.getIssues(options).then(
           (result) => {
@@ -41,14 +49,6 @@ class IssuesPage extends React.Component{
       return { repos: result, total: format(total) };
     }
 
-    componentWillMount(){
-        this.loadRepos({user : this.props.user.login, org: this.props.params.orgId,  from :'2016-10-01', to : '2016-10-31'});
-    }
-
-    componentWillReceiveProps(){
-        this.loadRepos({user : this.props.user.login, org: this.props.params.orgId,  from :'2016-10-01', to : '2016-10-31'});
-    }
-
     render() {
         let {user, params} = this.props, repos =  this.state.repos, counts = this.reposTotalCounts(this.state.repos);
         return (
@@ -67,12 +67,13 @@ class IssuesPage extends React.Component{
 IssuesPage.propTypes = {
     children: PropTypes.object,
     user: PropTypes.object,
-    userActions: PropTypes.object
+    userActions: PropTypes.object,
+    params: PropTypes.objec
 };
 
 IssuesPage.contextTypes = {
   store: React.PropTypes.object
-}
+};
 
 function mapStatesToProps(state, ownProps) {
     return {

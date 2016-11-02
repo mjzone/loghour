@@ -18,7 +18,7 @@ const Header = ({logout, user}) => {
 
 Header.propTypes = {
     logout: React.PropTypes.func,
-    user: PropTypes.object,
+    user: PropTypes.object
 };
 
 export default Header;

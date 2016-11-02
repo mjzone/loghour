@@ -17,10 +17,6 @@ class App extends React.Component{
         this.logout = this.logout.bind(this);
     }
 
-    setupAuthToken(token){
-        axios.defaults.headers.common['Authorization'] = store.get('token');
-    }
-
     componentWillMount(){
             if(store.get('token')){
                 this.initialize();
@@ -38,6 +34,10 @@ class App extends React.Component{
                 }
             );
         }
+    }
+
+    setupAuthToken(token){
+        axios.defaults.headers.common['Authorization'] = store.get('token');
     }
 
     initialize(){
@@ -102,8 +102,7 @@ function mapStatesToProps(state, ownProps) {
 function mapActionsToDispatch(dispatch) {
     return {
         userActions: bindActionCreators(userActions, dispatch),
-        orgActions: bindActionCreators(orgActions, dispatch),
-        orgsActions: bindActionCreators(orgsActions, dispatch)
+        orgActions: bindActionCreators(orgActions, dispatch)
     };
 }
 

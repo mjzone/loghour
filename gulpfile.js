@@ -27,7 +27,7 @@ gulp.task('start-offline-server', function(done) {
 /* Start offline server for local development */
 gulp.task('start-client', function(done) {
     process.env.IS_OFFLINE = true;
-    runCommand('cd web ' + commandSeparator + 'npm start', done);
+    runCommand('cd web ' + commandSeparator + 'npm start -s', done);
 });
 
 /* Deploy Lambdas and API Gateway to AWS */
