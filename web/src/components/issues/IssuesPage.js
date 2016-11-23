@@ -4,11 +4,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from '../../actions/userActions';
 import * as api from '../../services/githubService';
+import BigCalendar from 'react-big-calendar';
+import moment from 'moment';
+
 
 class IssuesPage extends React.Component{
     constructor(props) {
        super(props);
        this.state = { repos: [], reposQueryInProgress: false};
+       BigCalendar.momentLocalizer(moment); 
     }
 
     componentWillMount(){
@@ -19,7 +23,7 @@ class IssuesPage extends React.Component{
         this.loadRepos({user : this.props.user.login, org: this.props.params.orgId,  from :'2016-10-01', to : '2016-10-31'});
     }
 
-        loadRepos(options){
+     loadRepos(options){
       let state = this.state;
       api.getIssues(options).then(
           (result) => {
@@ -49,6 +53,30 @@ class IssuesPage extends React.Component{
       return { repos: result, total: format(total) };
     }
 
+    getEventsList(){
+        return [
+        {
+            'title': 'All Day Event 1',
+            'allDay': true,
+            'start': new Date(2016, 11, 1),
+            'end': new Date(2016, 11, 1),
+        },
+       {
+            'title': 'All Day Event 2',
+            'allDay': true,
+            'start': new Date(2016, 11, 3),
+            'end': new Date(2016, 11, 3),
+        },
+        {
+            'title': 'All Day Event 3',
+            'allDay': true,
+            'start': new Date(2016, 11, 5),
+            'end': new Date(2016, 11, 5),
+        }
+       
+];
+    }
+
     render() {
         let {user, params} = this.props, repos =  this.state.repos, counts = this.reposTotalCounts(this.state.repos);
         return (
@@ -58,6 +86,11 @@ class IssuesPage extends React.Component{
               <hr/>
                 <h3> Total: {counts.total} </h3>
               <hr/>
+              <BigCalendar
+                {...this.props}
+                events={this.getEventsList()}
+                defaultDate={new Date(2016, 11, 1)}
+                />
               {this.props.children}
           </div>
         );
@@ -68,7 +101,7 @@ IssuesPage.propTypes = {
     children: PropTypes.object,
     user: PropTypes.object,
     userActions: PropTypes.object,
-    params: PropTypes.objec
+    params: PropTypes.object
 };
 
 IssuesPage.contextTypes = {

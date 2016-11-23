@@ -5,7 +5,6 @@ var setup = require('../setup'),
 
 module.exports.handler = (event, context, cb) => {
     setup(event);
-
     github.auth.config({
         id: process.env.GITHUB_ID,
         secret: process.env.GITHUB_SECRET
