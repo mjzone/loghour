@@ -6,7 +6,7 @@ const Header = ({logout, user}) => {
         <nav>
             <div className="row well">
                 <div className="col-md-10 right-align">
-                    <p>{user.name}</p>
+                    <p>Hello</p>
                 </div>
                 <div className="col-md-1 right-align">
                      <a className="pointer" onClick={logout}>Logout</a>

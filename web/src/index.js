@@ -8,6 +8,7 @@ import { Router, browserHistory } from 'react-router';
 import routes from './routes';
 import './styles/styles.css'; 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../node_modules/react-big-calendar/lib/css/react-big-calendar.css';
 
 const store = configureStore();
 

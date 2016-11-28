@@ -19,15 +19,18 @@ class App extends React.Component{
 
     componentWillMount(){
             if(store.get('token')){
+                debugger;
                 this.initialize();
             }
             else if(this.props.location.query.code){
+                debugger;
                api.getToken(this.props.location.query.code).then(
                 (result) => {
                     store.set('token', result.data.token);
                     store.set('user', result.data.user);
                     store.set('orgs', result.data.orgs);
                     store.set('org', result.data.org);
+                    debugger;
                     this.initialize();
                 }, (err) => {
                     throw ('Error: '+ err);
@@ -84,7 +87,8 @@ App.propTypes = {
     orgs: PropTypes.array,
     location: PropTypes.object,
     userActions: PropTypes.object,
-    orgActions: PropTypes.object
+    orgActions: PropTypes.object,
+    orgsActions: PropTypes.object
 };
 
 App.contextTypes = {
@@ -102,7 +106,8 @@ function mapStatesToProps(state, ownProps) {
 function mapActionsToDispatch(dispatch) {
     return {
         userActions: bindActionCreators(userActions, dispatch),
-        orgActions: bindActionCreators(orgActions, dispatch)
+        orgActions: bindActionCreators(orgActions, dispatch),
+        orgsActions: bindActionCreators(orgsActions, dispatch)
     };
 }
 
