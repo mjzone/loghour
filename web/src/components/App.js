@@ -72,7 +72,7 @@ class App extends React.Component{
         return (
             <div>
                 <Header logout={this.logout} user={this.props.user} selectedOrg={this.props.org}/>
-                <div className="container-fluid">
+                <div className="container">
                     {this.props.children}
                 </div>
             </div>
