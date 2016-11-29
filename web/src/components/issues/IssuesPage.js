@@ -80,7 +80,7 @@ class IssuesPage extends React.Component{
     render() {
         let {user, params} = this.props, repos =  this.state.repos, counts = this.reposTotalCounts(this.state.repos);
         return (
-          <div>
+          <div className="four-fifths column">
               <h2> Organization: {params.orgId} </h2>
               {_.map(repos, (repo) => <div key={repo.id} ><h3>{repo.name}</h3><span>Total: {counts.repos[repo.name]}</span></div>)}
               <hr/>

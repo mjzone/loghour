@@ -3,13 +3,15 @@ import { Link, IndexLink } from 'react-router';
 
 const Header = ({logout, user}) => {
     return (
-        <nav>
-            <div className="row well">
-                <div className="col-md-10 right-align">
-                    <p>Hello</p>
-                </div>
-                <div className="col-md-1 right-align">
-                     <a className="pointer" onClick={logout}>Logout</a>
+        <nav className="header-nav">
+            <div className="container">
+                <div className="columns">
+                    <div className="one-fifth column">
+                        <p>Hello</p>
+                    </div>
+                    <div>
+                        <a className="pointer right" onClick={logout}>Logout</a>
+                    </div>
                 </div>
             </div>
         </nav>
