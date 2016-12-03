@@ -20,7 +20,7 @@ class IssuesPage extends React.Component{
     }
 
     componentWillReceiveProps(){
-        this.loadRepos({user : this.props.user.login, org: this.props.params.orgId,  from :'2016-10-01', to : '2016-10-31'});
+        this.loadRepos({user : this.props.user.login, org: this.props.params.orgId,  from :'2016-10-01', to : '2016-10-30'});
     }
 
      loadRepos(options){
@@ -53,44 +53,45 @@ class IssuesPage extends React.Component{
       return { repos: result, total: format(total) };
     }
 
-    getEventsList(){
-        return [
-        {
-            'title': 'All Day Event 1',
-            'allDay': true,
-            'start': new Date(2016, 11, 1),
-            'end': new Date(2016, 11, 1),
-        },
-       {
-            'title': 'All Day Event 2',
-            'allDay': true,
-            'start': new Date(2016, 11, 3),
-            'end': new Date(2016, 11, 3),
-        },
-        {
-            'title': 'All Day Event 3',
-            'allDay': true,
-            'start': new Date(2016, 11, 5),
-            'end': new Date(2016, 11, 5),
-        }
-       
-];
+    getTimeLogs(obj){
+        return _.keys(obj);
     }
 
     render() {
         let {user, params} = this.props, repos =  this.state.repos, counts = this.reposTotalCounts(this.state.repos);
         return (
           <div className="four-fifths column">
-              <h2> Organization: {params.orgId} </h2>
-              {_.map(repos, (repo) => <div key={repo.id} ><h3>{repo.name}</h3><span>Total: {counts.repos[repo.name]}</span></div>)}
+              <h1> Organization: {params.orgId} </h1>
+              <br/>
+              {_.map(repos, (repo) => 
+                  <div key={repo.id} >
+                    <h2>{repo.name} - {counts.repos[repo.name]}</h2>
+                    <table>
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Time</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {_.map(repo.comments, (comment) => 
+                            _.map(this.getTimeLogs(comment.time_logs), (log) => 
+                                <tr>
+                                    <td>{log}</td>
+                                    <td><a href="{comment.html_url}">{comment.body}</a></td>
+                                    <td>{this.formatTime(comment.time_logs[log])}</td>
+                                </tr>
+                            )                              
+                        )}
+                    </tbody>
+                    </table>
+                  </div>
+              )}
               <hr/>
                 <h3> Total: {counts.total} </h3>
               <hr/>
-              <BigCalendar
-                {...this.props}
-                events={this.getEventsList()}
-                defaultDate={new Date(2016, 11, 1)}
-                />
+
               {this.props.children}
           </div>
         );
