@@ -43,6 +43,7 @@ a.active{
 }
 
 table {
+    margin-top: 10px;    
     border-collapse: collapse;
     width: 100%;
 }
@@ -55,6 +56,18 @@ th, td {
 tr:nth-child(even){background-color: #f2f2f2}
 
 th {
-    background-color: #4CAF50;
+    background-color: #5ca941;
     color: white;
+}
+
+.timeTable{
+    margin-top: 25px;
+}
+
+.search-btn{
+    margin-left: 10px;
+}
+
+.organization-title{
+    margin-bottom: 10px;
 }

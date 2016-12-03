@@ -9,7 +9,7 @@ import routes from './routes';
 import './styles/styles.css'; 
 import '../node_modules/primer-css/build/build.css';
 import '../node_modules/primer-css/build/index';
-import '../node_modules/react-big-calendar/lib/css/react-big-calendar.css';
+import '../node_modules/react-datepicker/dist/react-datepicker.css';
 
 const store = configureStore();
 

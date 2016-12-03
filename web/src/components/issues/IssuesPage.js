@@ -4,23 +4,21 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from '../../actions/userActions';
 import * as api from '../../services/githubService';
-import BigCalendar from 'react-big-calendar';
+import DatePicker from 'react-datepicker';
 import moment from 'moment';
-
 
 class IssuesPage extends React.Component{
     constructor(props) {
        super(props);
-       this.state = { repos: [], reposQueryInProgress: false};
-       BigCalendar.momentLocalizer(moment); 
+       this.state = { repos: [], startDate: moment().subtract(1, 'months'), endDate: moment(),  reposQueryInProgress: false};
     }
 
     componentWillMount(){
-        this.loadRepos({user : this.props.user.login, org: this.props.params.orgId,  from :'2016-10-01', to : '2016-10-31'});
+        this.loadRepos({user : this.props.user.login, org: this.props.params.orgId,  from : this.state.startDate.format('YYYY-MM-DD'), to : this.state.endDate.format('YYYY-MM-DD')});
     }
 
     componentWillReceiveProps(){
-        this.loadRepos({user : this.props.user.login, org: this.props.params.orgId,  from :'2016-10-01', to : '2016-10-30'});
+        this.loadRepos({user : this.props.user.login, org: this.props.params.orgId,  from : this.state.startDate.format('YYYY-MM-DD'), to : this.state.endDate.format('YYYY-MM-DD')});
     }
 
      loadRepos(options){
@@ -57,12 +55,50 @@ class IssuesPage extends React.Component{
         return _.keys(obj);
     }
 
+    handleSearch(){
+        this.loadRepos({user : this.props.user.login, org: this.props.params.orgId,  from : this.state.startDate.format('YYYY-MM-DD'), to : this.state.endDate.format('YYYY-MM-DD')});
+    }
+
+    handleChangeStart(date){
+        this.setState({
+            startDate: date
+        });
+    }
+
+    handleChangeEnd(date){
+        this.setState({
+            endDate: date
+        });
+    }
+
     render() {
         let {user, params} = this.props, repos =  this.state.repos, counts = this.reposTotalCounts(this.state.repos);
         return (
           <div className="four-fifths column">
-              <h1> Organization: {params.orgId} </h1>
+              <h1 className="organization-title"> Organization: {params.orgId} </h1>
               <br/>
+              <span> From: </span>
+              <DatePicker 
+                dateFormat="YYYY-MM-DD"
+                placeholderText="Select start date"
+                selected={this.state.startDate} 
+                selectsStart  
+                startDate={this.state.startDate} 
+                endDate={this.state.endDate} 
+                onChange={this.handleChangeStart.bind(this)} />
+
+              <span> To: </span>
+              <DatePicker
+                dateFormat="YYYY-MM-DD"
+                placeholderText="Select end date"
+                selected={this.state.endDate} 
+                selectsEnd  
+                startDate={this.state.startDate} 
+                endDate={this.state.endDate} 
+                onChange={this.handleChangeEnd.bind(this)} />
+
+                <span className="btn btn-primary btn-sm search-btn" onClick={this.handleSearch.bind(this)}>Search</span>
+             <div className="timeTable">
               {_.map(repos, (repo) => 
                   <div key={repo.id} >
                     <h2>{repo.name} - {counts.repos[repo.name]}</h2>
@@ -88,6 +124,7 @@ class IssuesPage extends React.Component{
                     </table>
                   </div>
               )}
+              </div>
               <hr/>
                 <h3> Total: {counts.total} </h3>
               <hr/>
