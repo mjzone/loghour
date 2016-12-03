@@ -79,7 +79,7 @@ class IssuesPage extends React.Component{
                             _.map(this.getTimeLogs(comment.time_logs), (log) => 
                                 <tr>
                                     <td>{log}</td>
-                                    <td><a href="{comment.html_url}">{comment.body}</a></td>
+                                    <td><a target="_blank" href={comment.html_url}>{comment.body}</a></td>
                                     <td>{this.formatTime(comment.time_logs[log])}</td>
                                 </tr>
                             )                              
